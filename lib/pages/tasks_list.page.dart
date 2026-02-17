@@ -19,6 +19,43 @@ class _TasksListPageState extends State<TasksListPage> {
     ),
   ];
 
+  void addTask() {
+    showModalBottomSheet(context: context, builder: (ctx){
+            return SizedBox(
+              height: 300,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 40,
+                      horizontal: 20,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Adicionar Tarefa",
+                          style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black54,
+                        ),
+                       ),
+                       IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: Icon(Icons.close),
+                      ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +107,7 @@ class _TasksListPageState extends State<TasksListPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: addTask,
         label: const Text('Nova Tarefa'),
         icon: const Icon(Icons.add),
       ),
