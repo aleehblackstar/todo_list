@@ -49,12 +49,19 @@ class _TasksListPageState extends State<TasksListPage> {
                     : null,
                 leading: Checkbox(value: task.completed, onChanged: (value) {
                   setState(() {
-                    task.completed = value ?? false;
+                    task.changeStatus(value!);
                   });
                 }),
-                trailing: Icon(
-                  task.important ? Icons.star : Icons.star_border,
-                  color: Colors.indigo,
+                trailing: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      task.changeImportant();
+                    });
+                  },
+                  icon: Icon(
+                    task.important ? Icons.star : Icons.star_border,
+                    color: Colors.indigo,
+                  ),
                 ),
                 onTap: () {},
               ),

@@ -7,6 +7,15 @@ class Task {
   Task({
     required this.title,
     this.description,
-    this.important = false, required bool completed,
-  }) : completed = false;
+    this.important = false,
+    required this.completed,
+  });
+
+  changeStatus(bool value) {
+    completed = value;
+  }
+
+  changeImportant() {
+    important = !important;
+  }
 }
