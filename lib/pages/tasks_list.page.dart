@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/models/task.model.dart';
+import 'package:todo_list/widgets/add_task.widgets.dart';
 
 class TasksListPage extends StatefulWidget {
   const TasksListPage({super.key});
@@ -20,40 +21,7 @@ class _TasksListPageState extends State<TasksListPage> {
   ];
 
   void addTask() {
-    showModalBottomSheet(context: context, builder: (ctx){
-            return SizedBox(
-              height: 300,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 40,
-                      horizontal: 20,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Adicionar Tarefa",
-                          style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black54,
-                        ),
-                       ),
-                       IconButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        icon: Icon(Icons.close),
-                      ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          });
+    showModalBottomSheet(context: context, builder: (ctx) => const AddTaks());
   }
 
   @override
@@ -74,6 +42,7 @@ class _TasksListPageState extends State<TasksListPage> {
         child: ListView.builder(
           itemCount: tasks.length,
           itemBuilder: (ctx, index) {
+            
             final task = tasks[index];
 
             return Card(
@@ -84,11 +53,14 @@ class _TasksListPageState extends State<TasksListPage> {
                 subtitle: task.description != null
                     ? Text(task.description!)
                     : null,
-                leading: Checkbox(value: task.completed, onChanged: (value) {
-                  setState(() {
-                    task.changeStatus(value!);
-                  });
-                }),
+                leading: Checkbox(
+                  value: task.completed,
+                  onChanged: (value) {
+                    setState(() {
+                      task.changeStatus(value!);
+                    });
+                  },
+                ),
                 trailing: IconButton(
                   onPressed: () {
                     setState(() {
