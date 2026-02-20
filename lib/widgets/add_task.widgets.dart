@@ -57,6 +57,18 @@ class AddTaks extends StatelessWidget {
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            child: Row(
+              children: [
+                Icon(Icons.sort),
+                const SizedBox(width: 10),
+                Icon(Icons.star_border),
+                const Spacer(),
+                TextButton(onPressed: () {}, child: const Text("Adicionar"))
+              ],
+            ),
+          )
         ],
       ),
     );
