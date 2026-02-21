@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
 
-class AddTaks extends StatelessWidget {
+class AddTaks extends StatefulWidget {
   const AddTaks({super.key});
+
+  @override
+  State<AddTaks> createState() => _AddTaksState();
+}
+
+class _AddTaksState extends State<AddTaks> {
+  var isImportant = false;
+  var showDescription = false;
+  final titleController = TextEditingController();
+  final descriptionController = TextEditingController();
+
+  addTasks (){}
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +55,14 @@ class AddTaks extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: TextField(
+              controller: titleController,
               decoration:  InputDecoration(
                 border: InputBorder.none,
                 hintText: "O que você quer fazer hoje?",
               ),
             ),
           ),
+          if (showDescription)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: const TextField(
@@ -61,9 +76,22 @@ class AddTaks extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             child: Row(
               children: [
-                Icon(Icons.sort),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      showDescription = true;
+                    });
+                  },
+                  child: Icon(Icons.sort)),
                 const SizedBox(width: 10),
-                Icon(Icons.star_border),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isImportant = !isImportant;
+                    });
+                  },
+                  child: Icon(isImportant ? Icons.star : Icons.star_border),
+                ),
                 const Spacer(),
                 TextButton(onPressed: () {}, child: const Text("Adicionar"))
               ],
