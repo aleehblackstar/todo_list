@@ -13,7 +13,6 @@ class _AddTaksState extends State<AddTaks> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
 
-  addTasks (){}
 
 
   @override
