@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../models/task.model.dart'; // Update this path to match your Task model location
 
 class AddTaks extends StatefulWidget {
   const AddTaks({super.key});
@@ -13,7 +14,17 @@ class _AddTaksState extends State<AddTaks> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
 
+  addTask() {
+    final task = Task(
+      title: titleController.text,
+      description: descriptionController.text.isEmpty ? null : descriptionController.text,
+      important: isImportant,
+      completed: false,
+    );
 
+    Navigator.of(context).pop(task);
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,22 +66,22 @@ class _AddTaksState extends State<AddTaks> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: TextField(
               controller: titleController,
-              decoration:  InputDecoration(
+              decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: "O que você quer fazer hoje?",
               ),
             ),
           ),
           if (showDescription)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: const TextField(
-              decoration:  InputDecoration(
-                border: InputBorder.none,
-                hintText: "Adicionar informações",
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: const TextField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: "Adicionar informações",
+                ),
               ),
             ),
-          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             child: Row(
@@ -81,7 +92,8 @@ class _AddTaksState extends State<AddTaks> {
                       showDescription = true;
                     });
                   },
-                  child: Icon(Icons.sort)),
+                  child: Icon(Icons.sort),
+                ),
                 const SizedBox(width: 10),
                 GestureDetector(
                   onTap: () {
@@ -92,10 +104,10 @@ class _AddTaksState extends State<AddTaks> {
                   child: Icon(isImportant ? Icons.star : Icons.star_border),
                 ),
                 const Spacer(),
-                TextButton(onPressed: () {}, child: const Text("Adicionar"))
+                TextButton(onPressed: () {}, child: const Text("Adicionar")),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

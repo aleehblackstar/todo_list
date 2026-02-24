@@ -20,8 +20,13 @@ class _TasksListPageState extends State<TasksListPage> {
     ),
   ];
 
-  void addTask() {
-    showModalBottomSheet(context: context, builder: (ctx) => const AddTaks());
+  void addTask() async {
+    final newTask = await showModalBottomSheet<Task>(
+      context: context,
+      builder: (ctx) => const AddTaks(),
+      );
+
+    print(newTask?.title);  
   }
 
   @override
