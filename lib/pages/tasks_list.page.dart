@@ -10,15 +10,7 @@ class TasksListPage extends StatefulWidget {
 }
 
 class _TasksListPageState extends State<TasksListPage> {
-  final List<Task> tasks = [
-    Task(title: "Estudar", description: "Aula de Flutter", completed: true),
-    Task(
-      title: "Ir na academia",
-      description: "Fazer cardio",
-      important: true,
-      completed: false,
-    ),
-  ];
+  final List<Task> tasks = [];
 
   void addTask() async {
     final newTask = await showModalBottomSheet<Task>(
@@ -26,7 +18,11 @@ class _TasksListPageState extends State<TasksListPage> {
       builder: (ctx) => const AddTaks(),
       );
 
-    print(newTask?.title);  
+    if (newTask != null) {
+      setState(() {
+        tasks.add(newTask);
+      });
+    }
   }
 
   @override

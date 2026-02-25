@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/task.model.dart'; // Update this path to match your Task model location
+import '../models/task.model.dart';
 
 class AddTaks extends StatefulWidget {
   const AddTaks({super.key});
@@ -11,104 +11,140 @@ class AddTaks extends StatefulWidget {
 class _AddTaksState extends State<AddTaks> {
   var isImportant = false;
   var showDescription = false;
+
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
 
-  addTask() {
+  final formKey = GlobalKey<FormState>();
+
+  void addTask() {
+    if (!formKey.currentState!.validate()) return;
+
     final task = Task(
       title: titleController.text,
-      description: descriptionController.text.isEmpty ? null : descriptionController.text,
+      description:
+          descriptionController.text.isEmpty ? null : descriptionController.text,
       important: isImportant,
       completed: false,
     );
 
     Navigator.of(context).pop(task);
-
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 300,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            top: 10,
+          ),
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  "Adicionar Tarefa",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black54,
+                // HEADER
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Adicionar Tarefa",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black54,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        icon: const Icon(Icons.close),
+                      ),
+                    ],
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(Icons.close),
+      
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Divider(thickness: 2),
+                ),
+      
+                const SizedBox(height: 10),
+      
+                // TÍTULO
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextFormField(
+                    controller: titleController,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "O que você quer fazer hoje?",
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "O título não pode estar vazio";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+      
+                // DESCRIÇÃO
+                if (showDescription)
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: TextField(
+                      controller: descriptionController,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Adicionar informações",
+                      ),
+                    ),
+                  ),
+      
+                const SizedBox(height: 10),
+      
+                // BOTÕES
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            showDescription = true;
+                          });
+                        },
+                        child: const Icon(Icons.sort),
+                      ),
+                      const SizedBox(width: 10),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isImportant = !isImportant;
+                          });
+                        },
+                        child: Icon(
+                          isImportant ? Icons.star : Icons.star_border,
+                        ),
+                      ),
+                      const Spacer(),
+                      TextButton(
+                        onPressed: addTask,
+                        child: const Text("Adicionar"),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-            child: Divider(thickness: 2, height: 0),
-          ),
-
-          const SizedBox(height: 10),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: TextField(
-              controller: titleController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: "O que você quer fazer hoje?",
-              ),
-            ),
-          ),
-          if (showDescription)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: const TextField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Adicionar informações",
-                ),
-              ),
-            ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      showDescription = true;
-                    });
-                  },
-                  child: Icon(Icons.sort),
-                ),
-                const SizedBox(width: 10),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isImportant = !isImportant;
-                    });
-                  },
-                  child: Icon(isImportant ? Icons.star : Icons.star_border),
-                ),
-                const Spacer(),
-                TextButton(onPressed: () {}, child: const Text("Adicionar")),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
