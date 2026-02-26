@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/models/task.model.dart';
 import 'package:todo_list/widgets/add_task.widgets.dart';
+import 'task_detail.page.dart';
 
 class TasksListPage extends StatefulWidget {
   const TasksListPage({super.key});
@@ -73,10 +74,16 @@ class _TasksListPageState extends State<TasksListPage> {
                     color: Colors.indigo,
                   ),
                 ),
-                onTap: () {},
-              ),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const TaskDetailPage(),
+                    ),
+                  );
+                },
+              )
             );
-          },
+          }
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
