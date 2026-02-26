@@ -11,6 +11,10 @@ class Task {
     required this.completed,
   });
 
+  set changeDescription(String? changeDescription) {}
+
+  set changeTitle(String changeTitle) {}
+
   changeStatus(bool value) {
     completed = value;
   }
