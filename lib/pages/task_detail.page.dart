@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list/models/task.model.dart';
 
-class TaskDetailPage extends StatelessWidget {
-  const TaskDetailPage({super.key});
+class TaskDetailPage extends StatefulWidget {
+  final Task task;
+
+
+   TaskDetailPage({super.key, required this.task});
+
+  @override
+  State<TaskDetailPage> createState() => _TaskDetailPageState();
+}
+
+class _TaskDetailPageState extends State<TaskDetailPage> {
+  final titleController = TextEditingController(text: widget.task.title);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +24,7 @@ class TaskDetailPage extends StatelessWidget {
         ),
         actions: [
           IconButton(onPressed: () {},
-          icon: const Icon(Icons.star_border),
+          icon: Icon(!widget.task.important ? Icons.star_border : Icons.star),
           ),
         ],
       ),
