@@ -26,6 +26,24 @@ class _TasksListPageState extends State<TasksListPage> {
     }
   }
 
+  void updateTask(Task task, int index) async{
+    final resultUpdate = await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => TaskDetailPage(
+                        task: task,),
+                    ),
+                  );
+                  if (resultUpdate != null) { 
+                    setState(() {
+                      if (resultUpdate is Task) {
+                        tasks[index] = resultUpdate;
+                      } else {
+                        tasks.removeAt(index);
+                      }
+                    });
+                  }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,13 +92,7 @@ class _TasksListPageState extends State<TasksListPage> {
                     color: Colors.indigo,
                   ),
                 ),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (ctx) => TaskDetailPage(task: task,),
-                    ),
-                  );
-                },
+                onTap: () => updateTask(task, index),
               )
             );
           }

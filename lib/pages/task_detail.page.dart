@@ -16,6 +16,8 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
 
   late bool isImportant;
 
+  final formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -25,13 +27,20 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
   }
 
   void saveTask() {
-    final updateTask = widget.task;
-    updateTask.changeStatus(isImportant);
-    updateTask.changeTitle = titleController.text;
-    updateTask.changeDescription =
-        descriptionController.text.isEmpty ? null : descriptionController.text;
+    if (formKey.currentState?.validate() != true) {
+      return;
+    }
 
-    Navigator.pop(context, updateTask);
+    final updatedTask = Task(
+      title: titleController.text,
+      description: descriptionController.text.isEmpty
+          ? null
+          : descriptionController.text,
+      important: isImportant,
+      completed: widget.task.completed,
+    );
+
+    Navigator.pop(context, updatedTask);
   }
 
   @override
@@ -54,41 +63,50 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12),
-          child: Column(
-            children: [
-              TextField(
-                controller: titleController,
-                decoration: const InputDecoration(
-                  labelText: "Título",
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: titleController,
+                  decoration: const InputDecoration(labelText: "Título"),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "O título é obrigatório";
+                    }
+                    return null;
+                  },
                 ),
-              ),
-              const SizedBox(height: 15),
-              TextField(
-                controller: descriptionController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Descrição",
+                const SizedBox(height: 15),
+                TextField(
+                  controller: descriptionController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Descrição",
+                  ),
+                  maxLines: 5,
                 ),
-                maxLines: 5,
-              ),
-              const SizedBox(height: 40),
-              TextButton(
-                onPressed: saveTask,
-                child: const Text("Salvar Tarefa"),
-              ),
-              const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text("Data de Criação: 12/05/2024"),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.delete_outline),
-                    iconSize: 28,
-                  )
-                ],
-              )
-            ],
+                const SizedBox(height: 40),
+                TextButton(
+                  onPressed: saveTask,
+                  child: const Text("Salvar Tarefa"),
+                ),
+                const Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text("Data de Criação: 12/05/2024"),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop("delete");
+                      },
+                      icon: const Icon(Icons.delete_outline),
+                      iconSize: 28,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
