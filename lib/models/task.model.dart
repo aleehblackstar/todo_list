@@ -3,23 +3,24 @@ class Task {
   String? description;
   bool completed;
   bool important;
+  DateTime createdAt;
 
   Task({
     required this.title,
     this.description,
-    this.important = false,
-    required this.completed,
-  });
+    this.important = false, required bool completed,
+  }) : completed = false,
+       createdAt = DateTime.now();   
 
   set changeDescription(String? changeDescription) {}
 
   set changeTitle(String changeTitle) {}
 
-  changeStatus(bool value) {
+  void changeStatus(bool value) {
     completed = value;
   }
 
-  changeImportant() {
+  void changeImportant() {
     important = !important;
   }
 }
