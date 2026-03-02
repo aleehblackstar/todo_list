@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_list/models/task.model.dart';
 
 class TaskDetailPage extends StatefulWidget {
@@ -95,7 +96,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text("Data de Criação: 12/05/2024"),
+                    Text("Criada em: ${DateFormat.MMMEd("pt_BR").format(widget.task.createdAt)}"),
                     IconButton(
                       onPressed: () {
                         Navigator.of(context).pop("delete");

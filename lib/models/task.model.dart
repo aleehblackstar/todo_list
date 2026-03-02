@@ -10,7 +10,7 @@ class Task {
     this.description,
     this.important = false, required bool completed,
   }) : completed = false,
-       createdAt = DateTime.now();   
+  createdAt = DateTime.now();   
 
   set changeDescription(String? changeDescription) {}
 
